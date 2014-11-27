@@ -69,7 +69,7 @@ This is a sample workbook that send data to web
       sheet1.set(i, 1, 'test'+i);
     
     // Save it
-    var result = workbook.save();
+    var result = workbook.saveToWeb();
     res.setHeader('Content-Type', 'application/vnd.openxmlformats');
     res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
     res.end(result, 'binary');
