@@ -398,40 +398,25 @@ class Workbook
       exec.exec 'rmdir "' + target + '" /q /s',()->
         cb not err
 
+  # edit by fungzw(not save local file)
   saveToWeb: () =>
     xlsx = new JSZip(templateXLSX, { base64: true, checkCRC32: false })
 
-    #target = @fpath + '\\' + @id
-    # edit by fungzw(not save local file)
     # 1 - build [Content_Types].xml
-    #fs.writeFileSync(target+'\\[Content_Types].xml',@ct.toxml(),'utf8')
     xlsx.file('[Content_Types].xml', @ct.toxml())
     # 2 - build docProps/app.xml
-    #fs.writeFileSync(target+'\\docProps\\app.xml',@da.toxml(),'utf8')
     xlsx.file('docProps\\app.xml', @da.toxml())
     # 3 - build xl/workbook.xml
-    #fs.writeFileSync(target+'\\xl\\workbook.xml',@wb.toxml(),'utf8')
     xlsx.file("xl\\workbook.xml", @wb.toxml())
     # 4 - build xl/sharedStrings.xml
-    #fs.writeFileSync(target+'\\xl\\sharedStrings.xml',@ss.toxml(),'utf8')
     xlsx.file('xl\\sharedStrings.xml', @ss.toxml())
     # 5 - build xl/_rels/workbook.xml.rels
-    #fs.writeFileSync(target+'\\xl\\_rels\\workbook.xml.rels',@re.toxml(),'utf8')
     xlsx.file('xl\\_rels\\workbook.xml.rels', @re.toxml())
     # 6 - build xl/worksheets/sheet(1-N).xml
     for i in [0...@sheets.length]
-      #fs.writeFileSync(target+'\\xl\\worksheets\\sheet'+(i+1)+'.xml',@sheets[i].toxml(),'utf8')
       xlsx.file("xl\\worksheets\\sheet" + (i + 1) + '.xml',@sheets[i].toxml())
     # 7 - build xl/styles.xml
-    #fs.writeFileSync(target+'\\xl\\styles.xml',@st.toxml(),'utf8') 
     xlsx.file('xl\\styles.xml', @st.toxml())
-    # 8 - compress temp folder to target file
-    # args = ' a -tzip "' + @fpath + '\\' + @fname + '" "*"'
-    # opts = {cwd:target}
-    # exec.exec '"'+opt.tmpl_path+'\\tool\\7za.exe"' + args, opts, (err,stdout,stderr)->
-    #   # 9 - delete temp folder
-    #   exec.exec 'rmdir "' + target + '" /q /s',()->
-    #     cb not err
 
     results = xlsx.generate({ base64: false, compression: "DEFLATE" })
 
