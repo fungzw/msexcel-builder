@@ -353,12 +353,14 @@ class Style
     return ss.end()
 
 class Workbook
-  constructor: (@fpath, @fname) ->
-    @id = ''+parseInt(Math.random()*9999999)
-    # create temp folder & copy template data
-    target = @fpath + '/' + @id + '/'
-    fs.rmdirSync(target) if existsSync(target)
-    tool.copy (opt.tmpl_path + '/tmpl'),target
+  constructor: (@fpath, @fname, isWeb) ->
+    # if is web,don't create temp folder
+    unless isWeb
+      @id = ''+parseInt(Math.random()*9999999)
+      # create temp folder & copy template data
+      target = @fpath + '/' + @id + '/'
+      fs.rmdirSync(target) if existsSync(target)
+      tool.copy (opt.tmpl_path + '/tmpl'),target
     # init
     @sheets = []
     @ss = new SharedStrings
