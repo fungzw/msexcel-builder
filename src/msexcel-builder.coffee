@@ -374,26 +374,26 @@ class Workbook
     return sheet
 
   save: (cb) =>
-    target = @fpath + '\\' + @id
+    target = @fpath + '/' + @id
     # 1 - build [Content_Types].xml
-    fs.writeFileSync(target+'\\[Content_Types].xml',@ct.toxml(),'utf8')
+    fs.writeFileSync(target+'/[Content_Types].xml',@ct.toxml(),'utf8')
     # 2 - build docProps/app.xml
-    fs.writeFileSync(target+'\\docProps\\app.xml',@da.toxml(),'utf8')
+    fs.writeFileSync(target+'/docProps/app.xml',@da.toxml(),'utf8')
     # 3 - build xl/workbook.xml
-    fs.writeFileSync(target+'\\xl\\workbook.xml',@wb.toxml(),'utf8')
+    fs.writeFileSync(target+'/xl/workbook.xml',@wb.toxml(),'utf8')
     # 4 - build xl/sharedStrings.xml
-    fs.writeFileSync(target+'\\xl\\sharedStrings.xml',@ss.toxml(),'utf8')
+    fs.writeFileSync(target+'/xl/sharedStrings.xml',@ss.toxml(),'utf8')
     # 5 - build xl/_rels/workbook.xml.rels
-    fs.writeFileSync(target+'\\xl\\_rels\\workbook.xml.rels',@re.toxml(),'utf8')
+    fs.writeFileSync(target+'/xl/_rels/workbook.xml.rels',@re.toxml(),'utf8')
     # 6 - build xl/worksheets/sheet(1-N).xml
     for i in [0...@sheets.length]
-      fs.writeFileSync(target+'\\xl\\worksheets\\sheet'+(i+1)+'.xml',@sheets[i].toxml(),'utf8')
+      fs.writeFileSync(target+'/xl/worksheets/sheet'+(i+1)+'.xml',@sheets[i].toxml(),'utf8')
     # 7 - build xl/styles.xml
-    fs.writeFileSync(target+'\\xl\\styles.xml',@st.toxml(),'utf8')    
+    fs.writeFileSync(target+'/xl/styles.xml',@st.toxml(),'utf8')    
     # 8 - compress temp folder to target file
-    args = ' a -tzip "' + @fpath + '\\' + @fname + '" "*"'
+    args = ' a -tzip "' + @fpath + '/' + @fname + '" "*"'
     opts = {cwd:target}
-    exec.exec '"'+opt.tmpl_path+'\\tool\\7za.exe"' + args, opts, (err,stdout,stderr)->
+    exec.exec '"'+opt.tmpl_path+'/tool/7za.exe"' + args, opts, (err,stdout,stderr)->
       # 9 - delete temp folder
       exec.exec 'rmdir "' + target + '" /q /s',()->
         cb not err
@@ -405,18 +405,18 @@ class Workbook
     # 1 - build [Content_Types].xml
     xlsx.file('[Content_Types].xml', @ct.toxml())
     # 2 - build docProps/app.xml
-    xlsx.file('docProps\\app.xml', @da.toxml())
+    xlsx.file('docProps/app.xml', @da.toxml())
     # 3 - build xl/workbook.xml
-    xlsx.file("xl\\workbook.xml", @wb.toxml())
+    xlsx.file("xl/workbook.xml", @wb.toxml())
     # 4 - build xl/sharedStrings.xml
-    xlsx.file('xl\\sharedStrings.xml', @ss.toxml())
+    xlsx.file('xl/sharedStrings.xml', @ss.toxml())
     # 5 - build xl/_rels/workbook.xml.rels
-    xlsx.file('xl\\_rels\\workbook.xml.rels', @re.toxml())
+    xlsx.file('xl/_rels/workbook.xml.rels', @re.toxml())
     # 6 - build xl/worksheets/sheet(1-N).xml
     for i in [0...@sheets.length]
-      xlsx.file("xl\\worksheets\\sheet" + (i + 1) + '.xml',@sheets[i].toxml())
+      xlsx.file("xl/worksheets/sheet" + (i + 1) + '.xml',@sheets[i].toxml())
     # 7 - build xl/styles.xml
-    xlsx.file('xl\\styles.xml', @st.toxml())
+    xlsx.file('xl/styles.xml', @st.toxml())
 
     results = xlsx.generate({ base64: false, compression: "DEFLATE" })
 
