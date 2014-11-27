@@ -353,9 +353,9 @@ class Style
     return ss.end()
 
 class Workbook
-  constructor: (@fpath, @fname, isWeb) ->
+  constructor: (@fpath, @fname, @isWeb) ->
     # if is web,don't create temp folder
-    unless isWeb
+    unless @isWeb
       @id = ''+parseInt(Math.random()*9999999)
       # create temp folder & copy template data
       target = @fpath + '/' + @id + '/'
@@ -427,5 +427,5 @@ class Workbook
     fs.rmdirSync target
 
 module.exports = 
-  createWorkbook: (fpath, fname)->
-    return new Workbook(fpath, fname)
+  createWorkbook: (fpath, fname, isWeb)->
+    return new Workbook(fpath, fname, isWeb)
