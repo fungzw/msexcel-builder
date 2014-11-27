@@ -57,7 +57,7 @@ This is a sample workbook that send data to web
   app.get('/Excel', function(req, res){
 
     // Create a new workbook file in current working-path
-    var workbook = excelbuilder.createWorkbook('sample.xlsx')
+    var workbook = excelbuilder.createWorkbook('./','sample.xlsx')
     
     // Create a new worksheet with 10 columns and 12 rows
     var sheet1 = workbook.createSheet('export sheet', 10, 12);
